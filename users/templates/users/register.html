@@ -1,0 +1,132 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Register - Rajasthan Municipal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">Create New User Account</h4>
+            </div>
+            <div class="card-body">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.emp_name.id_for_label }}" class="form-label">Employee Name *</label>
+                                {{ form.emp_name }}
+                                {% if form.emp_name.errors %}
+                                    <div class="text-danger">{{ form.emp_name.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.emp_code.id_for_label }}" class="form-label">Employee Code *</label>
+                                {{ form.emp_code }}
+                                {% if form.emp_code.errors %}
+                                    <div class="text-danger">{{ form.emp_code.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.mobile_no.id_for_label }}" class="form-label">Mobile Number *</label>
+                                {{ form.mobile_no }}
+                                {% if form.mobile_no.errors %}
+                                    <div class="text-danger">{{ form.mobile_no.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.email.id_for_label }}" class="form-label">Email Address *</label>
+                                {{ form.email }}
+                                {% if form.email.errors %}
+                                    <div class="text-danger">{{ form.email.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.username.id_for_label }}" class="form-label">Username *</label>
+                                {{ form.username }}
+                                {% if form.username.errors %}
+                                    <div class="text-danger">{{ form.username.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.role.id_for_label }}" class="form-label">Role *</label>
+                                {{ form.role }}
+                                {% if form.role.errors %}
+                                    <div class="text-danger">{{ form.role.errors }}</div>
+                                {% endif %}
+                                <small class="form-text text-muted">Select the employee's role in the organization</small>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.password1.id_for_label }}" class="form-label">Password *</label>
+                                {{ form.password1 }}
+                                {% if form.password1.errors %}
+                                    <div class="text-danger">{{ form.password1.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.password2.id_for_label }}" class="form-label">Confirm Password *</label>
+                                {{ form.password2 }}
+                                {% if form.password2.errors %}
+                                    <div class="text-danger">{{ form.password2.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.report_to.id_for_label }}" class="form-label">Reports To</label>
+                                {{ form.report_to }}
+                                {% if form.report_to.errors %}
+                                    <div class="text-danger">{{ form.report_to.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label for="{{ form.image.id_for_label }}" class="form-label">Profile Image</label>
+                                {{ form.image }}
+                                {% if form.image.errors %}
+                                    <div class="text-danger">{{ form.image.errors }}</div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Create Account</button>
+                    </div>
+                </form>
+                <div class="text-center mt-3">
+                    <p>Already have an account? <a href="{% url 'login' %}">Login here</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

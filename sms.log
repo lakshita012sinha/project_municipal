@@ -1,0 +1,66 @@
+ERROR 2026-01-30 14:41:42,372 sms_services 5784 15464 MSG91 SMS failed. Response: 3661446e4f4e4a326568424f
+ERROR 2026-01-30 14:57:09,326 sms_services 10424 16780 Fast2SMS failed: Invalid Authentication, Check Authorization Key
+ERROR 2026-01-30 14:58:45,981 sms_services 10424 16780 Fast2SMS failed: Invalid Authentication, Check Authorization Key
+ERROR 2026-01-30 15:00:53,982 sms_services 13288 8872 Fast2SMS failed: Invalid Authentication, Check Authorization Key
+WARNING 2026-01-30 15:05:41,172 sms_services 2272 19072 SMS service configuration error for fast2sms: Fast2SMS API key not properly configured. Please sign up at https://www.fast2sms.com/ and set FAST2SMS_API_KEY in settings. Current value is placeholder or empty.
+INFO 2026-01-30 15:05:41,174 sms_services 2272 19072 Trying fallback SMS provider: free
+INFO 2026-01-30 15:05:41,175 sms_services 2272 19072 ============================================================
+INFO 2026-01-30 15:05:41,759 sms_services 2272 19072 ============================================================
+ERROR 2026-01-30 15:05:41,896 sms_services 2272 19072 FreeSMS failed: name 'timezone' is not defined
+INFO 2026-01-30 15:07:57,533 sms_services 26000 4616 ============================================================
+INFO 2026-01-30 15:07:57,558 sms_services 26000 4616 ============================================================
+INFO 2026-01-30 15:07:57,582 sms_services 26000 4616 ============================================================
+WARNING 2026-01-30 15:07:57,587 sms_services 26000 4616 SMS service configuration error for fast2sms: Fast2SMS API key not properly configured. Please sign up at https://www.fast2sms.com/ and set FAST2SMS_API_KEY in settings. Current value is placeholder or empty.
+INFO 2026-01-30 15:07:57,587 sms_services 26000 4616 Trying fallback SMS provider: free
+WARNING 2026-01-30 15:07:57,588 sms_services 26000 4616 SMS service configuration error for msg91: MSG91 Auth Key not properly configured. Please sign up at https://msg91.com/ and set MSG91_AUTH_KEY in settings. Current value is placeholder or empty.
+INFO 2026-01-30 15:07:57,588 sms_services 26000 4616 Trying fallback SMS provider: free
+WARNING 2026-01-30 15:07:57,588 sms_services 26000 4616 SMS service configuration error for twilio: Twilio credentials not properly configured. Please sign up at https://www.twilio.com/ and set TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, and TWILIO_PHONE_NUMBER in settings. Current values are placeholders or empty.
+INFO 2026-01-30 15:07:57,589 sms_services 26000 4616 Trying fallback SMS provider: free
+WARNING 2026-01-30 15:07:57,590 sms_services 26000 4616 SMS service configuration error for textlocal: TextLocal API key not properly configured. Please sign up at https://www.textlocal.in/ and set TEXTLOCAL_API_KEY in settings. Current value is placeholder or empty.
+INFO 2026-01-30 15:07:57,590 sms_services 26000 4616 Trying fallback SMS provider: free
+INFO 2026-01-30 15:09:05,138 sms_services 4784 10188 ============================================================
+INFO 2026-01-30 15:09:05,138 sms_services 4784 10188 FREE SMS SERVICE - OTP SENT
+INFO 2026-01-30 15:09:05,139 sms_services 4784 10188 ============================================================
+INFO 2026-01-30 15:09:05,139 sms_services 4784 10188 Mobile Number: +919876543210
+INFO 2026-01-30 15:09:05,139 sms_services 4784 10188 OTP Code: 123456
+INFO 2026-01-30 15:09:05,139 sms_services 4784 10188 Message: Your OTP for Rajasthan Municipal login is 123456. Valid for 5 minutes.
+INFO 2026-01-30 15:09:05,139 sms_services 4784 10188 Timestamp: 2026-01-30 09:39:05.139752+00:00
+INFO 2026-01-30 15:09:05,139 sms_services 4784 10188 ============================================================
+WARNING 2026-01-30 15:09:05,140 sms_services 4784 10188 SMS service configuration error for fast2sms: Fast2SMS API key not properly configured. Please sign up at https://www.fast2sms.com/ and set FAST2SMS_API_KEY in settings. Current value is placeholder or empty.
+INFO 2026-01-30 15:09:05,141 sms_services 4784 10188 Trying fallback SMS provider: free
+WARNING 2026-01-30 15:09:05,141 sms_services 4784 10188 SMS service configuration error for msg91: MSG91 Auth Key not properly configured. Please sign up at https://msg91.com/ and set MSG91_AUTH_KEY in settings. Current value is placeholder or empty.
+INFO 2026-01-30 15:09:05,141 sms_services 4784 10188 Trying fallback SMS provider: free
+WARNING 2026-01-30 15:09:05,141 sms_services 4784 10188 SMS service configuration error for twilio: Twilio credentials not properly configured. Please sign up at https://www.twilio.com/ and set TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN, and TWILIO_PHONE_NUMBER in settings. Current values are placeholders or empty.
+INFO 2026-01-30 15:09:05,142 sms_services 4784 10188 Trying fallback SMS provider: free
+WARNING 2026-01-30 15:09:05,142 sms_services 4784 10188 SMS service configuration error for textlocal: TextLocal API key not properly configured. Please sign up at https://www.textlocal.in/ and set TEXTLOCAL_API_KEY in settings. Current value is placeholder or empty.
+INFO 2026-01-30 15:09:05,142 sms_services 4784 10188 Trying fallback SMS provider: free
+WARNING 2026-01-30 15:10:28,322 sms_services 8044 7780 SMS service configuration error for fast2sms: Fast2SMS API key not properly configured. Please sign up at https://www.fast2sms.com/ and set FAST2SMS_API_KEY in settings. Current value is placeholder or empty.
+INFO 2026-01-30 15:10:28,325 sms_services 8044 7780 Trying fallback SMS provider: free
+INFO 2026-01-30 15:10:28,326 sms_services 8044 7780 ============================================================
+INFO 2026-01-30 15:10:28,328 sms_services 8044 7780 FREE SMS SERVICE - OTP SENT
+INFO 2026-01-30 15:10:28,331 sms_services 8044 7780 ============================================================
+INFO 2026-01-30 15:10:28,332 sms_services 8044 7780 Mobile Number: +919251854983
+INFO 2026-01-30 15:10:28,332 sms_services 8044 7780 OTP Code: 996481
+INFO 2026-01-30 15:10:28,334 sms_services 8044 7780 Message: Your OTP for Rajasthan Municipal login is 996481. Valid for 5 minutes.
+INFO 2026-01-30 15:10:28,335 sms_services 8044 7780 Timestamp: 2026-01-30 09:40:28.335707+00:00
+INFO 2026-01-30 15:10:28,336 sms_services 8044 7780 ============================================================
+WARNING 2026-01-30 15:13:29,326 sms_services 8044 15764 SMS service configuration error for fast2sms: Fast2SMS API key not properly configured. Please sign up at https://www.fast2sms.com/ and set FAST2SMS_API_KEY in settings. Current value is placeholder or empty.
+INFO 2026-01-30 15:13:29,328 sms_services 8044 15764 Trying fallback SMS provider: free
+INFO 2026-01-30 15:13:29,328 sms_services 8044 15764 ============================================================
+INFO 2026-01-30 15:13:29,329 sms_services 8044 15764 FREE SMS SERVICE - OTP SENT
+INFO 2026-01-30 15:13:29,330 sms_services 8044 15764 ============================================================
+INFO 2026-01-30 15:13:29,331 sms_services 8044 15764 Mobile Number: +919876543210
+INFO 2026-01-30 15:13:29,338 sms_services 8044 15764 OTP Code: 848738
+INFO 2026-01-30 15:13:29,338 sms_services 8044 15764 Message: Your OTP for Rajasthan Municipal login is 848738. Valid for 5 minutes.
+INFO 2026-01-30 15:13:29,339 sms_services 8044 15764 Timestamp: 2026-01-30 09:43:29.339495+00:00
+INFO 2026-01-30 15:13:29,340 sms_services 8044 15764 ============================================================
+WARNING 2026-01-30 16:15:17,318 sms_services 10260 17788 SMS service configuration error for fast2sms: Fast2SMS API key not properly configured. Please sign up at https://www.fast2sms.com/ and set FAST2SMS_API_KEY in settings. Current value is placeholder or empty.
+INFO 2026-01-30 16:15:17,321 sms_services 10260 17788 Trying fallback SMS provider: free
+INFO 2026-01-30 16:15:17,323 sms_services 10260 17788 ============================================================
+INFO 2026-01-30 16:15:17,325 sms_services 10260 17788 FREE SMS SERVICE - OTP SENT
+INFO 2026-01-30 16:15:17,328 sms_services 10260 17788 ============================================================
+INFO 2026-01-30 16:15:17,330 sms_services 10260 17788 Mobile Number: +917665089888
+INFO 2026-01-30 16:15:17,331 sms_services 10260 17788 OTP Code: 939774
+INFO 2026-01-30 16:15:17,333 sms_services 10260 17788 Message: Your OTP for Rajasthan Municipal login is 939774. Valid for 5 minutes.
+INFO 2026-01-30 16:15:17,334 sms_services 10260 17788 Timestamp: 2026-01-30 10:45:17.334054+00:00
+INFO 2026-01-30 16:15:17,335 sms_services 10260 17788 ============================================================

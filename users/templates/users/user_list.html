@@ -1,0 +1,239 @@
+{% extends 'users/base.html' %}
+
+{% block title %}User List - Rajasthan Municipal{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <div>
+                    <h4 class="mb-0">User Management</h4>
+                    <small class="text-muted">Total Users: {{ total_users }}</small>
+                </div>
+                <div>
+                    <a href="{% url 'register' %}" class="btn btn-primary">
+                        <i class="fas fa-plus"></i> Add New User
+                    </a>
+                </div>
+            </div>
+            
+            <div class="card-body">
+                <!-- Search and Filter Section -->
+                <div class="row mb-4">
+                    <div class="col-md-12">
+                        <form method="get" class="row g-3">
+                            <div class="col-md-4">
+                                <label class="form-label">Search</label>
+                                <input type="text" name="search" class="form-control" 
+                                       placeholder="Search by name, code, username, email, mobile..." 
+                                       value="{{ search_query }}">
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Filter by Role</label>
+                                <select name="role" class="form-control">
+                                    <option value="">All Roles</option>
+                                    {% for role_code, role_name in role_choices %}
+                                        <option value="{{ role_code }}" {% if role_filter == role_code %}selected{% endif %}>
+                                            {{ role_name }}
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <label class="form-label">Filter by Status</label>
+                                <select name="status" class="form-control">
+                                    <option value="">All Status</option>
+                                    <option value="active" {% if status_filter == 'active' %}selected{% endif %}>Active</option>
+                                    <option value="inactive" {% if status_filter == 'inactive' %}selected{% endif %}>Inactive</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <label class="form-label">&nbsp;</label>
+                                <div class="d-grid">
+                                    <button type="submit" class="btn btn-outline-primary">Filter</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Users Table -->
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>Emp Code</th>
+                                <th>Employee Name</th>
+                                <th>Username</th>
+                                <th>Email</th>
+                                <th>Mobile</th>
+                                <th>Role</th>
+                                <th>Reports To</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for user_item in users %}
+                            <tr>
+                                <td>
+                                    <strong>{{ user_item.emp_code }}</strong>
+                                </td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        {% if user_item.image %}
+                                            <img src="{{ user_item.image.url }}" alt="Profile" 
+                                                 class="rounded-circle me-2" style="width: 32px; height: 32px; object-fit: cover;">
+                                        {% else %}
+                                            <div class="bg-secondary rounded-circle me-2 d-flex align-items-center justify-content-center" 
+                                                 style="width: 32px; height: 32px; font-size: 12px; color: white;">
+                                                {{ user_item.emp_name|first|upper }}
+                                            </div>
+                                        {% endif %}
+                                        <div>
+                                            <div class="fw-bold">{{ user_item.emp_name }}</div>
+                                            <small class="text-muted">{{ user_item.first_name }} {{ user_item.last_name }}</small>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>{{ user_item.username }}</td>
+                                <td>
+                                    <a href="mailto:{{ user_item.email }}" class="text-decoration-none">
+                                        {{ user_item.email }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <a href="tel:{{ user_item.mobile_no }}" class="text-decoration-none">
+                                        {{ user_item.mobile_no }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <span class="badge bg-info">{{ user_item.get_role_display }}</span>
+                                </td>
+                                <td>
+                                    {% if user_item.report_to %}
+                                        <small>{{ user_item.report_to.emp_name }}</small>
+                                    {% else %}
+                                        <small class="text-muted">-</small>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if user_item.is_active %}
+                                        <span class="badge bg-success">Active</span>
+                                    {% else %}
+                                        <span class="badge bg-danger">Inactive</span>
+                                    {% endif %}
+                                    {% if user_item.is_staff %}
+                                        <span class="badge bg-warning">Staff</span>
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    <div class="btn-group" role="group">
+                                        <a href="{% url 'user_detail' user_item.id %}" 
+                                           class="btn btn-sm btn-outline-info" title="View Details">
+                                            <i class="fas fa-eye"></i>
+                                        </a>
+                                        <a href="{% url 'user_update' user_item.id %}" 
+                                           class="btn btn-sm btn-outline-warning" title="Edit User">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        {% if user.role == 'commissioner' or user.role == 'zone_commissioner' or user.role == 'ulb_admin' or user.is_staff %}
+                                            {% if user_item != user %}
+                                                <a href="{% url 'user_delete' user_item.id %}" 
+                                                   class="btn btn-sm btn-outline-danger" title="Delete User"
+                                                   onclick="return confirm('Are you sure you want to delete {{ user_item.emp_name }}?')">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            {% endif %}
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% empty %}
+                            <tr>
+                                <td colspan="9" class="text-center py-4">
+                                    <div class="text-muted">
+                                        <i class="fas fa-users fa-3x mb-3"></i>
+                                        <h5>No Users Found</h5>
+                                        <p>No users match your search criteria.</p>
+                                        {% if search_query or role_filter or status_filter %}
+                                            <a href="{% url 'user_list' %}" class="btn btn-outline-primary">Clear Filters</a>
+                                        {% endif %}
+                                    </div>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Summary Cards -->
+                {% if users %}
+                <div class="row mt-4">
+                    <div class="col-md-3">
+                        <div class="card bg-primary text-white">
+                            <div class="card-body text-center">
+                                <h4>{{ users|length }}</h4>
+                                <small>Total Users</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-success text-white">
+                            <div class="card-body text-center">
+                                <h4>{{ users|dictsort:"is_active"|length }}</h4>
+                                <small>Active Users</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-info text-white">
+                            <div class="card-body text-center">
+                                <h4>{{ users|dictsort:"is_staff"|length }}</h4>
+                                <small>Staff Members</small>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card bg-warning text-white">
+                            <div class="card-body text-center">
+                                <h4>{{ role_choices|length }}</h4>
+                                <small>Available Roles</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<style>
+.table th {
+    border-top: none;
+    font-weight: 600;
+    font-size: 0.875rem;
+}
+
+.btn-group .btn {
+    margin-right: 2px;
+}
+
+.badge {
+    font-size: 0.75rem;
+}
+
+.table-responsive {
+    border-radius: 0.375rem;
+}
+
+.card {
+    box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+</style>
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends 'users/base.html' %}
+
+{% block title %}Delete User - {{ user_to_delete.emp_name }}{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card border-danger">
+            <div class="card-header bg-danger text-white">
+                <h4 class="mb-0">
+                    <i class="fas fa-exclamation-triangle"></i> Confirm User Deletion
+                </h4>
+            </div>
+            <div class="card-body">
+                <div class="text-center mb-4">
+                    {% if user_to_delete.image %}
+                        <img src="{{ user_to_delete.image.url }}" alt="Profile Image" 
+                             class="rounded-circle mb-3" style="width: 100px; height: 100px; object-fit: cover;">
+                    {% else %}
+                        <div class="bg-secondary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                             style="width: 100px; height: 100px; font-size: 2rem; color: white;">
+                            {{ user_to_delete.emp_name|first|upper }}
+                        </div>
+                    {% endif %}
+                </div>
+                
+                <div class="alert alert-danger">
+                    <h5 class="alert-heading">Warning!</h5>
+                    <p>You are about to permanently delete the following user:</p>
+                    <hr>
+                    <div class="row">
+                        <div class="col-6"><strong>Name:</strong></div>
+                        <div class="col-6">{{ user_to_delete.emp_name }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6"><strong>Employee Code:</strong></div>
+                        <div class="col-6">{{ user_to_delete.emp_code }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6"><strong>Username:</strong></div>
+                        <div class="col-6">{{ user_to_delete.username }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6"><strong>Email:</strong></div>
+                        <div class="col-6">{{ user_to_delete.email }}</div>
+                    </div>
+                    <div class="row">
+                        <div class="col-6"><strong>Role:</strong></div>
+                        <div class="col-6">{{ user_to_delete.get_role_display }}</div>
+                    </div>
+                    <hr>
+                    <p class="mb-0">
+                        <strong>This action cannot be undone!</strong> All user data, including login history and associated records, will be permanently removed.
+                    </p>
+                </div>
+                
+                <!-- Show team members if any -->
+                {% if user_to_delete.customuser_set.all %}
+                <div class="alert alert-warning">
+                    <h6>Impact on Team Members</h6>
+                    <p>The following users currently report to {{ user_to_delete.emp_name }}:</p>
+                    <ul class="mb-0">
+                        {% for team_member in user_to_delete.customuser_set.all %}
+                        <li>{{ team_member.emp_name }} ({{ team_member.get_role_display }})</li>
+                        {% endfor %}
+                    </ul>
+                    <p class="mt-2 mb-0"><strong>Note:</strong> These users will no longer have a reporting manager after deletion.</p>
+                </div>
+                {% endif %}
+                
+                <form method="post" class="mt-4">
+                    {% csrf_token %}
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                        <a href="{% url 'user_detail' user_to_delete.id %}" class="btn btn-outline-secondary me-md-2">
+                            <i class="fas fa-arrow-left"></i> Cancel
+                        </a>
+                        <a href="{% url 'user_list' %}" class="btn btn-outline-primary me-md-2">
+                            <i class="fas fa-list"></i> Back to List
+                        </a>
+                        <button type="submit" class="btn btn-danger">
+                            <i class="fas fa-trash"></i> Yes, Delete User
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+<script>
+// Add confirmation dialog
+document.querySelector('form').addEventListener('submit', function(e) {
+    if (!confirm('Are you absolutely sure you want to delete {{ user_to_delete.emp_name }}? This action cannot be undone!')) {
+        e.preventDefault();
+    }
+});
+</script>
+{% endblock %}

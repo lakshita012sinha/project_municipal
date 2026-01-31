@@ -1,0 +1,10 @@
+Django>=4.0.0
+Pillow>=9.0.0
+requests>=2.28.0
+
+# SMS Service Dependencies (install as needed)
+# For Twilio SMS service
+twilio>=8.0.0
+
+# For MSG91 (no additional package needed, uses requests)
+# For TextLocal (no additional package needed, uses requests)

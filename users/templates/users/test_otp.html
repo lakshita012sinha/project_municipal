@@ -1,0 +1,153 @@
+{% extends 'users/base.html' %}
+
+{% block title %}OTP Testing - Rajasthan Municipal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0">OTP Testing Interface</h4>
+                <p class="text-muted mb-0">Test SMS services and view OTP codes</p>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-info">
+                    <h6>SMS Service Status</h6>
+                    <p class="mb-2">
+                        <strong>Current Default:</strong> Free Simulation Service (Console Output)
+                    </p>
+                    <p class="mb-0">
+                        <strong>Quick Fix:</strong> If you see authentication errors, the service will automatically 
+                        fall back to the free simulation service. Check console output for OTP codes.
+                    </p>
+                </div>
+                
+                <form method="post" id="testSmsForm">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">Mobile Number</label>
+                                <input type="text" name="mobile_number" class="form-control" 
+                                       placeholder="+919876543210" required>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="mb-3">
+                                <label class="form-label">SMS Provider</label>
+                                <select name="provider" class="form-control">
+                                    <option value="free">Free Simulation (Console)</option>
+                                    <option value="fast2sms">Fast2SMS (100 Free SMS)</option>
+                                    <option value="way2sms">Way2SMS (Free Service)</option>
+                                    <option value="msg91">MSG91 (Free Credits)</option>
+                                    <option value="twilio">Twilio (Paid)</option>
+                                    <option value="textlocal">TextLocal (Paid)</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary">Send Test OTP</button>
+                    </div>
+                </form>
+                
+                <div id="testResult" class="mt-4" style="display: none;"></div>
+                
+                <hr class="my-4">
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Free Options:</h6>
+                        <ul class="list-unstyled">
+                            <li>✓ <strong>Free Simulation</strong> - Console output (unlimited)</li>
+                            <li>✓ <strong>Fast2SMS</strong> - 100 real SMS free</li>
+                            <li>✓ <strong>Way2SMS</strong> - Free service</li>
+                            <li>✓ <strong>MSG91</strong> - Rs.20-50 free credits</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>How to Check OTP:</h6>
+                        <ul class="list-unstyled">
+                            <li>• <strong>Console</strong> - Check terminal output</li>
+                            <li>• <strong>Log File</strong> - Check sms.log</li>
+                            <li>• <strong>Real SMS</strong> - Check your phone</li>
+                            <li>• <strong>Admin Panel</strong> - Check OTP records</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="alert alert-warning mt-3">
+                    <h6>Configuration Issues?</h6>
+                    <p class="mb-2">
+                        If you see "Invalid Authentication" errors:
+                    </p>
+                    <ol class="mb-2">
+                        <li>The system automatically falls back to <strong>Free Simulation</strong></li>
+                        <li>Check console output for OTP codes</li>
+                        <li>To fix: Get proper API keys from the SMS provider</li>
+                        <li>Run: <code>python manage.py check_sms_config</code> for detailed status</li>
+                    </ol>
+                    <p class="mb-0">
+                        <strong>Quick Start:</strong> Use "Free Simulation" - it works without any setup!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+document.getElementById('testSmsForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    const resultDiv = document.getElementById('testResult');
+    
+    // Show loading
+    resultDiv.style.display = 'block';
+    resultDiv.innerHTML = '<div class="alert alert-info">Sending test SMS...</div>';
+    
+    fetch('{% url "test_otp_api" %}', {
+        method: 'POST',
+        body: formData,
+        headers: {
+            'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value,
+        },
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            resultDiv.innerHTML = `
+                <div class="alert alert-success">
+                    <h6>✅ SMS Sent Successfully!</h6>
+                    <p><strong>Provider:</strong> ${data.provider}</p>
+                    <p><strong>Message ID:</strong> ${data.message_id || 'N/A'}</p>
+                    <p><strong>OTP Code:</strong> <code>${data.otp_code}</code></p>
+                    ${data.provider === 'FreeSMS' ? 
+                        '<p><strong>Note:</strong> Check console output for detailed OTP information.</p>' : 
+                        '<p><strong>Note:</strong> Check your mobile phone for the SMS.</p>'
+                    }
+                </div>
+            `;
+        } else {
+            resultDiv.innerHTML = `
+                <div class="alert alert-danger">
+                    <h6>❌ SMS Failed</h6>
+                    <p><strong>Error:</strong> ${data.message}</p>
+                    <p><strong>Provider:</strong> ${data.provider}</p>
+                </div>
+            `;
+        }
+    })
+    .catch(error => {
+        resultDiv.innerHTML = `
+            <div class="alert alert-danger">
+                <h6>❌ Request Failed</h6>
+                <p>Error: ${error.message}</p>
+            </div>
+        `;
+    });
+});
+</script>
+{% endblock %}

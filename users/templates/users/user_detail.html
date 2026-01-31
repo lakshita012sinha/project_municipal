@@ -1,0 +1,226 @@
+{% extends 'users/base.html' %}
+
+{% block title %}{{ user_detail.emp_name }} - User Details{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">Profile Picture</h5>
+            </div>
+            <div class="card-body text-center">
+                {% if user_detail.image %}
+                    <img src="{{ user_detail.image.url }}" alt="Profile Image" 
+                         class="img-fluid rounded-circle mb-3" style="width: 200px; height: 200px; object-fit: cover;">
+                {% else %}
+                    <div class="bg-secondary rounded-circle d-inline-flex align-items-center justify-content-center mb-3" 
+                         style="width: 200px; height: 200px; font-size: 4rem; color: white;">
+                        {{ user_detail.emp_name|first|upper }}
+                    </div>
+                {% endif %}
+                <h4>{{ user_detail.emp_name }}</h4>
+                <p class="text-muted">{{ user_detail.get_role_display }}</p>
+                
+                <div class="d-grid gap-2">
+                    <a href="{% url 'user_update' user_detail.id %}" class="btn btn-warning">
+                        <i class="fas fa-edit"></i> Edit User
+                    </a>
+                    <a href="{% url 'user_list' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0">User Information</h5>
+                <div>
+                    {% if user_detail.is_active %}
+                        <span class="badge bg-success">Active</span>
+                    {% else %}
+                        <span class="badge bg-danger">Inactive</span>
+                    {% endif %}
+                    {% if user_detail.is_staff %}
+                        <span class="badge bg-warning">Staff</span>
+                    {% endif %}
+                    {% if user_detail.is_superuser %}
+                        <span class="badge bg-danger">Superuser</span>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-muted">Personal Information</h6>
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>Employee Name:</strong></td>
+                                <td>{{ user_detail.emp_name }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Employee Code:</strong></td>
+                                <td><span class="badge bg-primary">{{ user_detail.emp_code }}</span></td>
+                            </tr>
+                            <tr>
+                                <td><strong>First Name:</strong></td>
+                                <td>{{ user_detail.first_name|default:"-" }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Last Name:</strong></td>
+                                <td>{{ user_detail.last_name|default:"-" }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Role:</strong></td>
+                                <td><span class="badge bg-info">{{ user_detail.get_role_display }}</span></td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h6 class="text-muted">Contact Information</h6>
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>Email:</strong></td>
+                                <td>
+                                    <a href="mailto:{{ user_detail.email }}" class="text-decoration-none">
+                                        {{ user_detail.email }}
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Mobile Number:</strong></td>
+                                <td>
+                                    <a href="tel:{{ user_detail.mobile_no }}" class="text-decoration-none">
+                                        {{ user_detail.mobile_no }}
+                                    </a>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Username:</strong></td>
+                                <td>{{ user_detail.username }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Reports To:</strong></td>
+                                <td>
+                                    {% if user_detail.report_to %}
+                                        <a href="{% url 'user_detail' user_detail.report_to.id %}" class="text-decoration-none">
+                                            {{ user_detail.report_to.emp_name }}
+                                        </a>
+                                        <br><small class="text-muted">{{ user_detail.report_to.get_role_display }}</small>
+                                    {% else %}
+                                        <span class="text-muted">No reporting manager</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+                
+                <hr>
+                
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6 class="text-muted">Account Information</h6>
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>Date Joined:</strong></td>
+                                <td>{{ user_detail.date_joined|date:"F d, Y" }}</td>
+                            </tr>
+                            <tr>
+                                <td><strong>Last Login:</strong></td>
+                                <td>
+                                    {% if user_detail.last_login %}
+                                        {{ user_detail.last_login|date:"F d, Y H:i" }}
+                                    {% else %}
+                                        <span class="text-muted">Never logged in</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Account Status:</strong></td>
+                                <td>
+                                    {% if user_detail.is_active %}
+                                        <span class="text-success">Active</span>
+                                    {% else %}
+                                        <span class="text-danger">Inactive</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h6 class="text-muted">Permissions</h6>
+                        <table class="table table-borderless">
+                            <tr>
+                                <td><strong>Staff Status:</strong></td>
+                                <td>
+                                    {% if user_detail.is_staff %}
+                                        <span class="text-success">Yes</span>
+                                    {% else %}
+                                        <span class="text-muted">No</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                            <tr>
+                                <td><strong>Superuser:</strong></td>
+                                <td>
+                                    {% if user_detail.is_superuser %}
+                                        <span class="text-danger">Yes</span>
+                                    {% else %}
+                                        <span class="text-muted">No</span>
+                                    {% endif %}
+                                </td>
+            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Team Members (if this user is a manager) -->
+        {% if user_detail.customuser_set.all %}
+        <div class="card mt-4">
+            <div class="card-header">
+                <h5 class="mb-0">Team Members</h5>
+                <small class="text-muted">Users reporting to {{ user_detail.emp_name }}</small>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    {% for team_member in user_detail.customuser_set.all %}
+                    <div class="col-md-6 mb-3">
+                        <div class="d-flex align-items-center">
+                            {% if team_member.image %}
+                                <img src="{{ team_member.image.url }}" alt="Profile" 
+                                     class="rounded-circle me-3" style="width: 40px; height: 40px; object-fit: cover;">
+                            {% else %}
+                                <div class="bg-secondary rounded-circle me-3 d-flex align-items-center justify-content-center" 
+                                     style="width: 40px; height: 40px; font-size: 16px; color: white;">
+                                    {{ team_member.emp_name|first|upper }}
+                                </div>
+                            {% endif %}
+                            <div>
+                                <div class="fw-bold">
+                                    <a href="{% url 'user_detail' team_member.id %}" class="text-decoration-none">
+                                        {{ team_member.emp_name }}
+                                    </a>
+                                </div>
+                                <small class="text-muted">{{ team_member.get_role_display }}</small>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Add Font Awesome for icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+{% endblock %}
