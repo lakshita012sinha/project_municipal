@@ -1,0 +1,191 @@
+/* Responsive CSS for Rajasthan Municipal Login */
+
+/* Extra small devices (phones, 576px and down) */
+@media (max-width: 575.98px) {
+    .wrapper {
+        padding: 10px;
+    }
+    
+    .auth-box {
+        margin: 0;
+    }
+    
+    .box-area {
+        min-height: auto;
+        border-radius: 10px !important;
+    }
+    
+    .left-box {
+        display: none;
+    }
+    
+    .right-box {
+        padding: 25px 20px;
+    }
+    
+    .featured-image img {
+        max-width: 60px;
+    }
+    
+    .header-text h3 {
+        font-size: 1.3rem;
+    }
+    
+    .input-group .form-control {
+        padding: 10px 15px;
+        font-size: 14px;
+    }
+    
+    .input-group-text {
+        padding: 10px 12px;
+    }
+    
+    .primary-button {
+        padding: 12px;
+        font-size: 14px;
+    }
+}
+
+/* Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+    .left-box {
+        display: none;
+    }
+    
+    .right-box {
+        padding: 35px 25px;
+    }
+    
+    .wrapper {
+        padding: 15px;
+    }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+    .left-box {
+        padding: 30px 25px;
+    }
+    
+    .right-box {
+        padding: 35px 30px;
+    }
+    
+    .featured-outline img {
+        max-width: 150px;
+    }
+    
+    .institution-name h2 {
+        font-size: 1.6rem;
+    }
+    
+    .about-text {
+        font-size: 0.85rem;
+    }
+}
+
+/* Large devices (desktops, 992px and up) */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+    .left-box {
+        padding: 35px 30px;
+    }
+    
+    .right-box {
+        padding: 40px 35px;
+    }
+}
+
+/* Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+    .auth-box {
+        max-width: 1100px;
+    }
+    
+    .left-box {
+        padding: 50px 40px;
+    }
+    
+    .right-box {
+        padding: 50px 45px;
+    }
+    
+    .featured-outline img {
+        max-width: 220px;
+    }
+    
+    .institution-name h2 {
+        font-size: 2rem;
+    }
+}
+
+/* Landscape orientation adjustments */
+@media (orientation: landscape) and (max-height: 600px) {
+    .wrapper {
+        padding: 10px;
+    }
+    
+    .box-area {
+        min-height: auto;
+    }
+    
+    .left-box {
+        padding: 20px;
+    }
+    
+    .right-box {
+        padding: 20px;
+    }
+    
+    .featured-outline {
+        margin-bottom: 15px;
+    }
+    
+    .featured-outline img {
+        max-width: 120px;
+    }
+    
+    .institution-name {
+        margin-bottom: 15px;
+    }
+    
+    .institution-name h2 {
+        font-size: 1.4rem;
+        margin-bottom: 5px;
+    }
+    
+    .about-text {
+        font-size: 0.8rem;
+        line-height: 1.4;
+    }
+}
+
+/* High DPI displays */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .featured-image img,
+    .featured-outline img {
+        image-rendering: -webkit-optimize-contrast;
+        image-rendering: crisp-edges;
+    }
+}
+
+/* Print styles */
+@media print {
+    .wrapper {
+        background: white;
+    }
+    
+    .box-area {
+        box-shadow: none;
+        border: 1px solid #ddd;
+    }
+    
+    .left-box {
+        background: white;
+        color: black;
+    }
+    
+    .primary-button {
+        background: #333;
+        color: white;
+    }
+}

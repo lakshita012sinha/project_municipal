@@ -64,3 +64,23 @@ INFO 2026-01-30 16:15:17,331 sms_services 10260 17788 OTP Code: 939774
 INFO 2026-01-30 16:15:17,333 sms_services 10260 17788 Message: Your OTP for Rajasthan Municipal login is 939774. Valid for 5 minutes.
 INFO 2026-01-30 16:15:17,334 sms_services 10260 17788 Timestamp: 2026-01-30 10:45:17.334054+00:00
 INFO 2026-01-30 16:15:17,335 sms_services 10260 17788 ============================================================
+WARNING 2026-02-02 11:43:26,265 sms_services 24836 12112 SMS service configuration error for fast2sms: Fast2SMS API key not properly configured. Please sign up at https://www.fast2sms.com/ and set FAST2SMS_API_KEY in settings. Current value is placeholder or empty.
+INFO 2026-02-02 11:43:26,268 sms_services 24836 12112 Trying fallback SMS provider: free
+INFO 2026-02-02 11:43:26,269 sms_services 24836 12112 ============================================================
+INFO 2026-02-02 11:43:26,270 sms_services 24836 12112 FREE SMS SERVICE - OTP SENT
+INFO 2026-02-02 11:43:26,271 sms_services 24836 12112 ============================================================
+INFO 2026-02-02 11:43:26,273 sms_services 24836 12112 Mobile Number: +
+INFO 2026-02-02 11:43:26,276 sms_services 24836 12112 OTP Code: 192485
+INFO 2026-02-02 11:43:26,279 sms_services 24836 12112 Message: Your OTP for Rajasthan Municipal login is 192485. Valid for 5 minutes.
+INFO 2026-02-02 11:43:26,281 sms_services 24836 12112 Timestamp: 2026-02-02 06:13:26.281264+00:00
+INFO 2026-02-02 11:43:26,284 sms_services 24836 12112 ============================================================
+WARNING 2026-02-02 11:44:26,606 sms_services 24836 20456 SMS service configuration error for fast2sms: Fast2SMS API key not properly configured. Please sign up at https://www.fast2sms.com/ and set FAST2SMS_API_KEY in settings. Current value is placeholder or empty.
+INFO 2026-02-02 11:44:26,609 sms_services 24836 20456 Trying fallback SMS provider: free
+INFO 2026-02-02 11:44:26,611 sms_services 24836 20456 ============================================================
+INFO 2026-02-02 11:44:26,612 sms_services 24836 20456 FREE SMS SERVICE - OTP SENT
+INFO 2026-02-02 11:44:26,612 sms_services 24836 20456 ============================================================
+INFO 2026-02-02 11:44:26,613 sms_services 24836 20456 Mobile Number: +917665089888
+INFO 2026-02-02 11:44:26,620 sms_services 24836 20456 OTP Code: 801121
+INFO 2026-02-02 11:44:26,621 sms_services 24836 20456 Message: Your OTP for Rajasthan Municipal login is 801121. Valid for 5 minutes.
+INFO 2026-02-02 11:44:26,623 sms_services 24836 20456 Timestamp: 2026-02-02 06:14:26.623046+00:00
+INFO 2026-02-02 11:44:26,624 sms_services 24836 20456 ============================================================
