@@ -1,0 +1,181 @@
+{% extends 'survey_process/base.html' %}
+
+{% block title %}Export Survey Data - Rajasthan Municipal{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="fas fa-file-excel"></i> Survey Report Export</h2>
+            <a href="{% url 'survey_process:dashboard' %}" class="btn btn-outline-secondary">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-filter"></i> Export Filters
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    <!-- Date Range -->
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <label for="date_from" class="form-label">
+                                <strong>Date From *</strong>
+                            </label>
+                            <input type="date" class="form-control" id="date_from" name="date_from" 
+                                   value="{{ today }}" required>
+                            <small class="form-text text-muted">Start date for survey data</small>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="date_to" class="form-label">
+                                <strong>Date To *</strong>
+                            </label>
+                            <input type="date" class="form-control" id="date_to" name="date_to" 
+                                   value="{{ today }}" required>
+                            <small class="form-text text-muted">End date for survey data</small>
+                        </div>
+                    </div>
+                    
+                    <!-- Filter Options -->
+                    <div class="row mb-4">
+                        <div class="col-md-3">
+                            <label for="zone" class="form-label">Zone</label>
+                            <select class="form-control" id="zone" name="zone">
+                                <option value="ALL">ALL</option>
+                                <option value="area1">Area 1</option>
+                                <option value="area2">Area 2</option>
+                                <option value="area3">Area 3</option>
+                                <option value="area4">Area 4</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="ward_no" class="form-label">Ward No. *</label>
+                            <select class="form-control" id="ward_no" name="ward_no">
+                                <option value="ALL">ALL</option>
+                                <option value="ward1">Ward 1</option>
+                                <option value="ward2">Ward 2</option>
+                                <option value="ward3">Ward 3</option>
+                                <option value="ward4">Ward 4</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="is_taxable" class="form-label">Is Taxable</label>
+                            <select class="form-control" id="is_taxable" name="is_taxable">
+                                <option value="ALL">ALL</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                        <div class="col-md-3">
+                            <label for="is_assessed" class="form-label">Is Assessed</label>
+                            <select class="form-control" id="is_assessed" name="is_assessed">
+                                <option value="ALL">ALL</option>
+                                <option value="yes">Yes</option>
+                                <option value="no">No</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Additional Filters -->
+                    <div class="row mb-4">
+                        <div class="col-md-4">
+                            <label for="operator_name" class="form-label">Operator Name</label>
+                            <select class="form-control" id="operator_name" name="operator_name">
+                                <option value="ALL">ALL</option>
+                                <!-- Add dynamic operator options here if needed -->
+                            </select>
+                        </div>
+                        <div class="col-md-4">
+                            <label for="survey_no" class="form-label">Survey No</label>
+                            <input type="text" class="form-control" id="survey_no" name="survey_no" 
+                                   placeholder="Enter Survey Number">
+                        </div>
+                        <div class="col-md-4">
+                            <label for="service_no" class="form-label">Service No.</label>
+                            <input type="text" class="form-control" id="service_no" name="service_no" 
+                                   placeholder="Enter Service Number">
+                        </div>
+                    </div>
+                    
+                    <!-- Export Button -->
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+                                <button type="submit" class="btn btn-success btn-lg">
+                                    <i class="fas fa-download"></i> Export to Excel
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <!-- Information Panel -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h6 class="mb-0"><i class="fas fa-info-circle"></i> Export Information</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Export Features:</h6>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-check text-success"></i> Date range filtering</li>
+                            <li><i class="fas fa-check text-success"></i> Zone and ward filtering</li>
+                            <li><i class="fas fa-check text-success"></i> Operator-wise data</li>
+                            <li><i class="fas fa-check text-success"></i> Service number search</li>
+                            <li><i class="fas fa-check text-success"></i> Complete survey details</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Excel Columns Include:</h6>
+                        <ul class="list-unstyled">
+                            <li><i class="fas fa-table text-info"></i> Survey & Service Numbers</li>
+                            <li><i class="fas fa-table text-info"></i> Property details & measurements</li>
+                            <li><i class="fas fa-table text-info"></i> Owner information</li>
+                            <li><i class="fas fa-table text-info"></i> Address details</li>
+                            <li><i class="fas fa-table text-info"></i> GPS coordinates</li>
+                            <li><i class="fas fa-table text-info"></i> Survey status & dates</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="alert alert-info mt-3">
+                    <i class="fas fa-info-circle"></i>
+                    <strong>Note:</strong> The exported Excel file will contain all survey data matching your filter criteria. 
+                    Large date ranges may take longer to process.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+// Set default date range (last 30 days to today)
+document.addEventListener('DOMContentLoaded', function() {
+    const today = new Date();
+    const thirtyDaysAgo = new Date(today.getTime() - (30 * 24 * 60 * 60 * 1000));
+    
+    const dateFrom = document.getElementById('date_from');
+    const dateTo = document.getElementById('date_to');
+    
+    if (!dateFrom.value) {
+        dateFrom.value = thirtyDaysAgo.toISOString().split('T')[0];
+    }
+    if (!dateTo.value) {
+        dateTo.value = today.toISOString().split('T')[0];
+    }
+});
+</script>
+{% endblock %}

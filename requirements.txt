@@ -1,6 +1,7 @@
 Django>=4.0.0
 Pillow>=9.0.0
 requests>=2.28.0
+openpyxl>=3.1.0
 
 # SMS Service Dependencies (install as needed)
 # For Twilio SMS service

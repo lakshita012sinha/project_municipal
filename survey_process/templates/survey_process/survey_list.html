@@ -1,0 +1,166 @@
+{% extends 'survey_process/base.html' %}
+
+{% block title %}Survey List - Rajasthan Municipal{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="fas fa-list"></i> Survey List</h2>
+            <div>
+                <a href="{% url 'survey_process:export_survey_data' %}" class="btn btn-success">
+                    <i class="fas fa-file-excel"></i> Export Data
+                </a>
+                <a href="{% url 'survey_process:create_survey' %}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> New Survey
+                </a>
+                <a href="{% url 'survey_process:dashboard' %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+            </div> 
+        </div>
+    </div>
+</div>
+
+<!-- Filters -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form method="get" class="row g-3">
+                    <div class="col-md-3">
+                        <label for="search" class="form-label">Search</label>
+                        <input type="text" class="form-control" id="search" name="search" 
+                               value="{{ search_query }}" placeholder="Service No or Unique Key">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-control" id="status" name="status">
+                            <option value="">All Status</option>
+                            <option value="draft" {% if status_filter == 'draft' %}selected{% endif %}>Draft</option>
+                            <option value="form_completed" {% if status_filter == 'form_completed' %}selected{% endif %}>Form Completed</option>
+                            <option value="geotagged" {% if status_filter == 'geotagged' %}selected{% endif %}>Geotagged</option>
+                            <option value="completed" {% if status_filter == 'completed' %}selected{% endif %}>Completed</option>
+                            <option value="verified" {% if status_filter == 'verified' %}selected{% endif %}>Verified</option>
+                            <option value="rejected" {% if status_filter == 'rejected' %}selected{% endif %}>Rejected</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="surveyor" class="form-label">Surveyor</label>
+                        <select class="form-control" id="surveyor" name="surveyor">
+                            <option value="">All Surveyors</option>
+                            <!-- Add surveyor options here if needed -->
+                        </select>
+                    </div>
+                    <div class="col-md-3">
+                        <label class="form-label">&nbsp;</label>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-search"></i> Filter
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Survey List -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0">
+                    <i class="fas fa-clipboard-list"></i> Surveys
+                    <span class="badge bg-primary">{{ surveys.count }}</span>
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if surveys %}
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Service No</th>
+                                    <th>Unique Key</th>
+                                    <th>Status</th>
+                                    <th>Surveyor</th>
+                                    <th>Created</th>
+                                    <th>Updated</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for survey in surveys %}
+                                <tr>
+                                    <td>
+                                        <strong>{{ survey.service_no }}</strong>
+                                    </td>
+                                    <td>{{ survey.unique_key }}</td>
+                                    <td>
+                                        {% if survey.status == 'draft' %}
+                                            <span class="badge bg-secondary">{{ survey.get_status_display }}</span>
+                                        {% elif survey.status == 'form_completed' %}
+                                            <span class="badge bg-info">{{ survey.get_status_display }}</span>
+                                        {% elif survey.status == 'geotagged' %}
+                                            <span class="badge bg-warning">{{ survey.get_status_display }}</span>
+                                        {% elif survey.status == 'completed' %}
+                                            <span class="badge bg-success">{{ survey.get_status_display }}</span>
+                                        {% elif survey.status == 'verified' %}
+                                            <span class="badge bg-primary">{{ survey.get_status_display }}</span>
+                                        {% elif survey.status == 'rejected' %}
+                                            <span class="badge bg-danger">{{ survey.get_status_display }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ survey.surveyor.get_full_name|default:survey.surveyor.username }}</td>
+                                    <td>{{ survey.created_at|date:"d M Y H:i" }}</td>
+                                    <td>{{ survey.updated_at|date:"d M Y H:i" }}</td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="{% url 'survey_process:survey_detail' survey.id %}" 
+                                               class="btn btn-sm btn-outline-primary" title="View Details">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            {% if survey.status == 'draft' or survey.status == 'form_completed' %}
+                                                <a href="{% url 'survey_process:survey_form_edit' survey.id %}" 
+                                                   class="btn btn-sm btn-outline-warning" title="Edit">
+                                                    <i class="fas fa-edit"></i>
+                                                </a>
+                                            {% endif %}
+                                            {% if survey.status != 'completed' and survey.status != 'verified' %}
+                                                {% if survey.status == 'form_completed' or survey.status == 'geotagged' %}
+                                                    <a href="{% url 'survey_process:survey_geotagging' survey.id %}" 
+                                                       class="btn btn-sm btn-outline-info" title="Geotagging">
+                                                        <i class="fas fa-map-marker-alt"></i>
+                                                    </a>
+                                                {% endif %}
+                                            {% endif %}
+                                            {% if survey.status == 'draft' %}
+                                                <a href="{% url 'survey_process:delete_survey' survey.id %}" 
+                                                   class="btn btn-sm btn-outline-danger" title="Delete">
+                                                    <i class="fas fa-trash"></i>
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i class="fas fa-clipboard-list fa-3x text-muted mb-3"></i>
+                        <h5 class="text-muted">No surveys found</h5>
+                        <p class="text-muted">Start by creating your first survey.</p>
+                        <a href="{% url 'survey_process:create_survey' %}" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Create Survey
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

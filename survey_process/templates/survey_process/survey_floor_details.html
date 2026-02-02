@@ -1,0 +1,234 @@
+{% extends 'survey_process/base.html' %}
+
+{% block title %}Floor Details - Survey Form{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="fas fa-building"></i> Floor Details</h2>
+            <div>
+                <span class="badge bg-info">Survey: {{ survey.service_no }}</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Step Indicator -->
+<div class="step-indicator mb-4">
+    <div class="step completed">
+        <i class="fas fa-info-circle"></i><br>
+        <small>Basic Info</small>
+    </div>
+    <div class="step completed">
+        <i class="fas fa-user"></i><br>
+        <small>Owner Details</small>
+    </div>
+    <div class="step completed">
+        <i class="fas fa-map-marker-alt"></i><br>
+        <small>Address</small>
+    </div>
+    <div class="step completed">
+        <i class="fas fa-home"></i><br>
+        <small>Property</small>
+    </div>
+    <div class="step active">
+        <i class="fas fa-building"></i><br>
+        <small>Floors</small>
+    </div>
+    <div class="step">
+        <i class="fas fa-cogs"></i><br>
+        <small>Amenities</small>
+    </div>
+</div>
+
+<div class="row justify-content-center">
+    <div class="col-md-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-building"></i> Floor-wise Details</h5>
+                <button type="button" class="btn btn-sm btn-outline-primary" onclick="addFloor()">
+                    <i class="fas fa-plus"></i> Add Floor
+                </button>
+            </div>
+            <div class="card-body">
+                <form method="post" id="floor-form">
+                    {% csrf_token %}
+                    {{ formset.management_form }}
+                    
+                    <div id="floor-forms">
+                        {% for form in formset %}
+                            <div class="floor-form-row border rounded p-3 mb-3" data-form-index="{{ forloop.counter0 }}">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <h6 class="mb-0">Floor {{ forloop.counter }}</h6>
+                                    {% if not forloop.first %}
+                                        <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeFloor(this)">
+                                            <i class="fas fa-trash"></i> Remove
+                                        </button>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
+                                            <label class="form-label">Floor Name *</label>
+                                            {{ form.floor_name }}
+                                            {% if form.floor_name.errors %}
+                                                <div class="text-danger">{{ form.floor_name.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
+                                            <label class="form-label">Use Type *</label>
+                                            {{ form.use_type }}
+                                            {% if form.use_type.errors %}
+                                                <div class="text-danger">{{ form.use_type.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
+                                            <label class="form-label">Usage Type *</label>
+                                            {{ form.usage_type }}
+                                            {% if form.usage_type.errors %}
+                                                <div class="text-danger">{{ form.usage_type.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="mb-3">
+                                            <label class="form-label">Built Up Area (Sq Ft) *</label>
+                                            {{ form.built_up_area_sq_ft }}
+                                            {% if form.built_up_area_sq_ft.errors %}
+                                                <div class="text-danger">{{ form.built_up_area_sq_ft.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">From Year *</label>
+                                            {{ form.from_year }}
+                                            {% if form.from_year.errors %}
+                                                <div class="text-danger">{{ form.from_year.errors }}</div>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="mb-3">
+                                            <label class="form-label">Upto Year</label>
+                                            {{ form.upto_year }}
+                                            {% if form.upto_year.errors %}
+                                                <div class="text-danger">{{ form.upto_year.errors }}</div>
+                                            {% endif %}
+                                            <small class="form-text text-muted">Leave empty if still in use</small>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <!-- Hidden fields for formset -->
+                                {% for hidden in form.hidden_fields %}
+                                    {{ hidden }}
+                                {% endfor %}
+                                
+                                {% if form.DELETE %}
+                                    <div class="form-check">
+                                        {{ form.DELETE }}
+                                        <label class="form-check-label text-danger">
+                                            Delete this floor
+                                        </label>
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-between">
+                                <a href="{% url 'survey_process:survey_property_details' survey.id %}" class="btn btn-outline-secondary">
+                                    <i class="fas fa-arrow-left"></i> Previous: Property Details
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fas fa-arrow-right"></i> Next: Amenities
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
+        <div class="card mt-4">
+            <div class="card-header">
+                <h6 class="mb-0"><i class="fas fa-info-circle"></i> Floor Details Information</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h6>Floor Types:</h6>
+                        <ul class="list-unstyled small">
+                            <li><strong>Ground Floor:</strong> Main entrance level</li>
+                            <li><strong>First Floor:</strong> One level above ground</li>
+                            <li><strong>Basement:</strong> Below ground level</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h6>Usage Types:</h6>
+                        <ul class="list-unstyled small">
+                            <li><strong>Self Occupied:</strong> Used by owner</li>
+                            <li><strong>Rented:</strong> Given on rent</li>
+                            <li><strong>Vacant:</strong> Currently empty</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+let formIndex = {{ formset.total_form_count }};
+
+function addFloor() {
+    const floorFormsDiv = document.getElementById('floor-forms');
+    const totalForms = document.getElementById('id_form-TOTAL_FORMS');
+    
+    // Create new form HTML (simplified - in production, you'd clone and update a template)
+    const newFormHtml = `
+        <div class="floor-form-row border rounded p-3 mb-3" data-form-index="${formIndex}">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+                <h6 class="mb-0">Floor ${formIndex + 1}</h6>
+                <button type="button" class="btn btn-sm btn-outline-danger" onclick="removeFloor(this)">
+                    <i class="fas fa-trash"></i> Remove
+                </button>
+            </div>
+            <div class="alert alert-info">
+                <small>Please save and reload to add more floors, or use the admin interface for advanced floor management.</small>
+            </div>
+        </div>
+    `;
+    
+    floorFormsDiv.insertAdjacentHTML('beforeend', newFormHtml);
+    totalForms.value = parseInt(totalForms.value) + 1;
+    formIndex++;
+}
+
+function removeFloor(button) {
+    const floorRow = button.closest('.floor-form-row');
+    const deleteCheckbox = floorRow.querySelector('input[name$="-DELETE"]');
+    
+    if (deleteCheckbox) {
+        deleteCheckbox.checked = true;
+        floorRow.style.display = 'none';
+    } else {
+        floorRow.remove();
+        const totalForms = document.getElementById('id_form-TOTAL_FORMS');
+        totalForms.value = parseInt(totalForms.value) - 1;
+    }
+}
+</script>
+{% endblock %}

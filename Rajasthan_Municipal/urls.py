@@ -22,6 +22,7 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('users.urls')),
+    path('survey/', include('survey_process.urls')),
 ]
 
 # Serve media files during development

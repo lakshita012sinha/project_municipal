@@ -1,0 +1,187 @@
+{% extends 'survey_process/base.html' %}
+
+{% block title %}Survey Dashboard - Rajasthan Municipal{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="fas fa-map-marked-alt"></i> Survey Dashboard</h2>
+            <div>
+                <a href="{% url 'survey_process:export_survey_data' %}" class="btn btn-success">
+                    <i class="fas fa-file-excel"></i> Export Data
+                </a>
+                <a href="{% url 'survey_process:create_survey' %}" class="btn btn-primary">
+                    <i class="fas fa-plus"></i> New Survey
+                </a>
+                <a href="{% url 'survey_process:survey_list' %}" class="btn btn-outline-primary">
+                    <i class="fas fa-list"></i> All Surveys
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Statistics Cards -->
+<div class="row mb-4">
+    <div class="col-md-3">
+        <div class="card bg-primary text-white">
+            <div class="card-body text-center">
+                <i class="fas fa-clipboard-list fa-2x mb-2"></i>
+                <h3>{{ total_surveys }}</h3>
+                <p class="mb-0">Total Surveys</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-success text-white">
+            <div class="card-body text-center">
+                <i class="fas fa-check-circle fa-2x mb-2"></i>
+                <h3>{{ completed_surveys }}</h3>
+                <p class="mb-0">Completed</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-warning text-white">
+            <div class="card-body text-center">
+                <i class="fas fa-clock fa-2x mb-2"></i>
+                <h3>{{ pending_surveys }}</h3>
+                <p class="mb-0">Pending</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3">
+        <div class="card bg-info text-white">
+            <div class="card-body text-center">
+                <i class="fas fa-user fa-2x mb-2"></i>
+                <h3>{{ user.get_role_display }}</h3>
+                <p class="mb-0">Your Role</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Recent Surveys -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="mb-0"><i class="fas fa-history"></i> Recent Surveys</h5>
+                <a href="{% url 'survey_process:survey_list' %}" class="btn btn-sm btn-outline-primary">View All</a>
+            </div>
+            <div class="card-body">
+                {% if user_surveys %}
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Service No.</th>
+                                    <th>Unique Key</th>
+                                    <th>Status</th>
+                                    <th>Created</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for survey in user_surveys %}
+                                <tr>
+                                    <td><strong>{{ survey.service_no }}</strong></td>
+                                    <td>{{ survey.unique_key }}</td>
+                                    <td>
+                                        {% if survey.status == 'completed' %}
+                                            <span class="badge bg-success">{{ survey.get_status_display }}</span>
+                                        {% elif survey.status == 'draft' %}
+                                            <span class="badge bg-secondary">{{ survey.get_status_display }}</span>
+                                        {% elif survey.status == 'form_completed' %}
+                                            <span class="badge bg-info">{{ survey.get_status_display }}</span>
+                                        {% elif survey.status == 'geotagged' %}
+                                            <span class="badge bg-warning">{{ survey.get_status_display }}</span>
+                                        {% else %}
+                                            <span class="badge bg-primary">{{ survey.get_status_display }}</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ survey.created_at|date:"M d, Y H:i" }}</td>
+                                    <td>
+                                        <div class="btn-group" role="group">
+                                            <a href="{% url 'survey_process:survey_detail' survey.id %}" 
+                                               class="btn btn-sm btn-outline-info" title="View Details">
+                                                <i class="fas fa-eye"></i>
+                                            </a>
+                                            {% if survey.status != 'completed' %}
+                                                {% if survey.status == 'draft' or survey.status == 'form_completed' %}
+                                                    <a href="{% url 'survey_process:survey_form_edit' survey.id %}" 
+                                                       class="btn btn-sm btn-outline-warning" title="Edit Form">
+                                                        <i class="fas fa-edit"></i>
+                                                    </a>
+                                                {% endif %}
+                                                <a href="{% url 'survey_process:survey_geotagging' survey.id %}" 
+                                                   class="btn btn-sm btn-outline-success" title="Geotagging">
+                                                    <i class="fas fa-map-marker-alt"></i>
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <div class="text-center py-4">
+                        <i class="fas fa-clipboard-list fa-3x text-muted mb-3"></i>
+                        <h5>No Surveys Yet</h5>
+                        <p class="text-muted">Start by creating your first survey</p>
+                        <a href="{% url 'survey_process:create_survey' %}" class="btn btn-primary">
+                            <i class="fas fa-plus"></i> Create Survey
+                        </a>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Actions -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="mb-0"><i class="fas fa-bolt"></i> Quick Actions</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="d-grid">
+                            <a href="{% url 'survey_process:export_survey_data' %}" class="btn btn-outline-success">
+                                <i class="fas fa-file-excel"></i> Export Data
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="d-grid">
+                            <a href="{% url 'survey_process:create_survey' %}" class="btn btn-outline-primary">
+                                <i class="fas fa-plus"></i> New Survey
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="d-grid">
+                            <a href="{% url 'survey_process:survey_list' %}" class="btn btn-outline-info">
+                                <i class="fas fa-list"></i> View All Surveys
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="d-grid">
+                            <a href="{% url 'dashboard' %}" class="btn btn-outline-secondary">
+                                <i class="fas fa-home"></i> Main Dashboard
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

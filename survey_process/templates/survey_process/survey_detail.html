@@ -1,0 +1,150 @@
+{% extends 'survey_process/base.html' %}
+
+{% block title %}Survey Details - {{ survey.service_no }}{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2><i class="fas fa-clipboard-list"></i> Survey Details</h2>
+            <div>
+                <a href="{% url 'survey_process:dashboard' %}" class="btn btn-outline-secondary">
+                    <i class="fas fa-arrow-left"></i> Back to Dashboard
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-4">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">Survey Status</h6>
+            </div>
+            <div class="card-body text-center">
+                {% if survey.status == 'completed' %}
+                    <i class="fas fa-check-circle fa-3x text-success mb-3"></i>
+                    <h5 class="text-success">Completed</h5>
+                {% elif survey.status == 'draft' %}
+                    <i class="fas fa-edit fa-3x text-secondary mb-3"></i>
+                    <h5 class="text-secondary">Draft</h5>
+                {% else %}
+                    <i class="fas fa-clock fa-3x text-warning mb-3"></i>
+                    <h5 class="text-warning">{{ survey.get_status_display }}</h5>
+                {% endif %}
+                
+                <div class="mt-3">
+                    {% if survey.status != 'completed' %}
+                        <a href="{% url 'survey_process:survey_geotagging' survey.id %}" class="btn btn-sm btn-success">
+                            <i class="fas fa-map-marker-alt"></i> Add Geotagging
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">Basic Information</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Service No:</strong> {{ survey.service_no }}</p>
+                        <p><strong>Unique Key:</strong> {{ survey.unique_key }}</p>
+                        <p><strong>Surveyor:</strong> {{ survey.surveyor.emp_name }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Created:</strong> {{ survey.created_at|date:"M d, Y H:i" }}</p>
+                        <p><strong>Updated:</strong> {{ survey.updated_at|date:"M d, Y H:i" }}</p>
+                        <p><strong>Status:</strong> 
+                            <span class="badge bg-primary">{{ survey.get_status_display }}</span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% if survey.owner %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">Property Owner Details</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Owner Name:</strong> {{ survey.owner.owner_name }}</p>
+                        <p><strong>Guardian Name:</strong> {{ survey.owner.guardian_name }}</p>
+                        <p><strong>Age:</strong> {{ survey.owner.age }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Mobile:</strong> {{ survey.owner.mobile_no }}</p>
+                        <p><strong>Gender:</strong> {{ survey.owner.get_gender_display }}</p>
+                        <p><strong>Profession:</strong> {{ survey.owner.get_profession_display }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+{% if survey.geotagging %}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h6 class="mb-0">Geotagging Information</h6>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Latitude:</strong> {{ survey.geotagging.latitude }}</p>
+                        <p><strong>Longitude:</strong> {{ survey.geotagging.longitude }}</p>
+                        <p><strong>Accuracy:</strong> {{ survey.geotagging.accuracy }} meters</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Geotagged By:</strong> {{ survey.geotagging.geotagged_by.emp_name }}</p>
+                        <p><strong>Geotagged At:</strong> {{ survey.geotagging.geotagged_at|date:"M d, Y H:i" }}</p>
+                    </div>
+                </div>
+                
+                <div class="row mt-3">
+                    <div class="col-md-4">
+                        <h6>Front Photo</h6>
+                        {% if survey.geotagging.front_photo %}
+                            <img src="{{ survey.geotagging.front_photo.url }}" class="img-fluid rounded" alt="Front Photo">
+                        {% else %}
+                            <div class="bg-light p-3 text-center rounded">No photo</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Side Photo 1</h6>
+                        {% if survey.geotagging.side_photo_1 %}
+                            <img src="{{ survey.geotagging.side_photo_1.url }}" class="img-fluid rounded" alt="Side Photo 1">
+                        {% else %}
+                            <div class="bg-light p-3 text-center rounded">No photo</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Side Photo 2</h6>
+                        {% if survey.geotagging.side_photo_2 %}
+                            <img src="{{ survey.geotagging.side_photo_2.url }}" class="img-fluid rounded" alt="Side Photo 2">
+                        {% else %}
+                            <div class="bg-light p-3 text-center rounded">No photo</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}

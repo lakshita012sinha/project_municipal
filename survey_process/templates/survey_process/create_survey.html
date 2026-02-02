@@ -1,0 +1,111 @@
+{% extends 'survey_process/base.html' %}
+
+{% block title %}Create Survey - Rajasthan Municipal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8">
+        <div class="card">
+            <div class="card-header">
+                <h4 class="mb-0"><i class="fas fa-plus"></i> Create New Survey</h4>
+                <p class="text-muted mb-0">Choose how you want to start your survey process</p>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card h-100 border-primary">
+                            <div class="card-body text-center">
+                                <i class="fas fa-clipboard-list fa-4x text-primary mb-3"></i>
+                                <h5>Survey Form Entry</h5>
+                                <p class="text-muted">
+                                    Fill out the complete survey form with property details, 
+                                    owner information, and amenities.
+                                </p>
+                                <div class="mb-3">
+                                    <small class="text-muted">
+                                        <i class="fas fa-check text-success"></i> Property Owner Details<br>
+                                        <i class="fas fa-check text-success"></i> Address Information<br>
+                                        <i class="fas fa-check text-success"></i> Property Specifications<br>
+                                        <i class="fas fa-check text-success"></i> Floor Details<br>
+                                        <i class="fas fa-check text-success"></i> Amenities Survey
+                                    </small>
+                                </div>
+                                <a href="{% url 'survey_process:survey_form_entry' %}" class="btn btn-primary">
+                                    <i class="fas fa-edit"></i> Start Form Entry
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="card h-100 border-success">
+                            <div class="card-body text-center">
+                                <i class="fas fa-map-marker-alt fa-4x text-success mb-3"></i>
+                                <h5>Geotagging Only</h5>
+                                <p class="text-muted">
+                                    Start with geotagging - capture location coordinates 
+                                    and photos of the property.
+                                </p>
+                                <div class="mb-3">
+                                    <small class="text-muted">
+                                        <i class="fas fa-check text-success"></i> GPS Coordinates<br>
+                                        <i class="fas fa-check text-success"></i> Front Photo<br>
+                                        <i class="fas fa-check text-success"></i> Side Photos (2)<br>
+                                        <i class="fas fa-check text-success"></i> Location Accuracy<br>
+                                        <i class="fas fa-check text-success"></i> Device Information
+                                    </small>
+                                </div>
+                                <button class="btn btn-success" onclick="startGeotagging()">
+                                    <i class="fas fa-camera"></i> Start Geotagging
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <div class="alert alert-info">
+                            <h6><i class="fas fa-info-circle"></i> Survey Process Information</h6>
+                            <p class="mb-2">
+                                <strong>Complete Survey:</strong> You can fill both form and geotagging separately. 
+                                The system will merge them into a single comprehensive survey record.
+                            </p>
+                            <ul class="mb-0">
+                                <li><strong>Form Entry:</strong> Can be done offline and submitted later</li>
+                                <li><strong>Geotagging:</strong> Requires GPS access and camera permissions</li>
+                                <li><strong>Flexible Order:</strong> You can start with either form or geotagging</li>
+                                <li><strong>Auto-merge:</strong> Both parts will be combined automatically</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="row">
+                    <div class="col-12 text-center">
+                        <a href="{% url 'survey_process:dashboard' %}" class="btn btn-outline-secondary">
+                            <i class="fas fa-arrow-left"></i> Back to Dashboard
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+function startGeotagging() {
+    // Check if geolocation is supported
+    if ("geolocation" in navigator) {
+        // First create a basic survey entry for geotagging
+        if (confirm('This will create a new survey entry and start geotagging. Continue?')) {
+            // You can implement AJAX call here to create basic survey
+            // For now, redirect to form entry with geotagging flag
+            window.location.href = "{% url 'survey_process:survey_form_entry' %}?start_with=geotagging";
+        }
+    } else {
+        alert('Geolocation is not supported by this browser. Please use the form entry method.');
+    }
+}
+</script>
+{% endblock %}

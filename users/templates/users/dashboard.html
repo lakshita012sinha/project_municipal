@@ -74,6 +74,9 @@
                             <a href="{% url 'user_list' %}" class="btn btn-outline-success">User List</a>
                             <a href="{% url 'register' %}" class="btn btn-outline-success">Add New User</a>
                         {% endif %}
+                        {% if user.role == 'tax_collector' or user.role == 'surveyor' or user.role == 'revenue_inspector' or user.role == 'commissioner' or user.role == 'zone_commissioner' or user.is_staff %}
+                            <a href="{% url 'survey_process:dashboard' %}" class="btn btn-outline-warning">Survey Process</a>
+                        {% endif %}
                         <a href="{% url 'change_password' %}" class="btn btn-outline-warning">Change Password</a>
                         <a href="{% url 'logout' %}" class="btn btn-outline-danger">Logout</a>
                     </div>

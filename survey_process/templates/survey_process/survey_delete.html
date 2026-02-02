@@ -1,0 +1,70 @@
+{% extends 'survey_process/base.html' %}
+
+{% block title %}Delete Survey - Rajasthan Municipal{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-danger text-white">
+                <h5 class="mb-0">
+                    <i class="fas fa-exclamation-triangle"></i> Delete Survey
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="alert alert-warning">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <strong>Warning!</strong> This action cannot be undone.
+                </div>
+                
+                <p>Are you sure you want to delete the following survey?</p>
+                
+                <div class="card bg-light">
+                    <div class="card-body">
+                        <h6><strong>Survey Details:</strong></h6>
+                        <ul class="list-unstyled mb-0">
+                            <li><strong>Service Number:</strong> {{ survey.service_no }}</li>
+                            <li><strong>Unique Key:</strong> {{ survey.unique_key }}</li>
+                            <li><strong>Status:</strong> 
+                                <span class="badge bg-secondary">{{ survey.get_status_display }}</span>
+                            </li>
+                            <li><strong>Created:</strong> {{ survey.created_at|date:"d M Y H:i" }}</li>
+                            <li><strong>Surveyor:</strong> {{ survey.surveyor.get_full_name|default:survey.surveyor.username }}</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="mt-4">
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                            <a href="{% url 'survey_process:survey_detail' survey.id %}" 
+                               class="btn btn-outline-secondary me-md-2">
+                                <i class="fas fa-times"></i> Cancel
+                            </a>
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fas fa-trash"></i> Delete Survey
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Information Panel -->
+        <div class="card mt-4">
+            <div class="card-header">
+                <h6 class="mb-0"><i class="fas fa-info-circle"></i> Important Information</h6>
+            </div>
+            <div class="card-body">
+                <ul class="list-unstyled mb-0">
+                    <li><i class="fas fa-check text-success"></i> Only draft surveys can be deleted</li>
+                    <li><i class="fas fa-check text-success"></i> Completed surveys are preserved for records</li>
+                    <li><i class="fas fa-check text-success"></i> All related data will be permanently removed</li>
+                    <li><i class="fas fa-check text-success"></i> This action cannot be undone</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

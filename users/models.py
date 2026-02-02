@@ -6,9 +6,7 @@ import string
 
 
 class CustomUser(AbstractUser):
-    """
-    Custom User model with additional fields for employee information
-    """
+    
     emp_name = models.CharField(max_length=100, verbose_name="Employee Name")
     emp_code = models.CharField(max_length=20, unique=True, verbose_name="Employee Code")
     mobile_no = models.CharField(max_length=15, verbose_name="Mobile Number")
@@ -53,7 +51,6 @@ class CustomUser(AbstractUser):
         verbose_name="Role"
     )
     
-    # Override the default fields to make them required
     first_name = models.CharField(max_length=30, blank=False)
     last_name = models.CharField(max_length=30, blank=False)
     email = models.EmailField(unique=True, blank=False)
