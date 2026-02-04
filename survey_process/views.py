@@ -83,6 +83,11 @@ def survey_form_entry(request, survey_id=None):
                 if not survey.pk:  # New survey
                     survey.surveyor = request.user
                     survey.status = 'form_completed'
+                    # Handle optional fields
+                    if not survey.service_no:
+                        survey.service_no = None
+                    if not survey.unique_key:
+                        survey.unique_key = None
                 survey.save()
                 
                 # Create history entry
@@ -273,8 +278,8 @@ def survey_amenities(request, survey_id):
             survey.status = 'form_completed'
             survey.save()
             
-            messages.success(request, 'Survey form completed successfully! You can now proceed with geotagging.')
-            return redirect('survey_process:survey_detail', survey_id=survey.id)
+            messages.success(request, 'Survey form completed successfully! Please review all details before saving.')
+            return redirect('survey_process:survey_review', survey_id=survey.id)
         else:
             messages.error(request, 'Please correct the errors in the form.')
     else:
@@ -340,6 +345,51 @@ def survey_geotagging(request, survey_id):
 
 
 @login_required
+def survey_review(request, survey_id):
+    """
+    Survey Review View - Shows all filled details in non-editable format for review
+    """
+    survey = get_object_or_404(Survey, id=survey_id, surveyor=request.user)
+    
+    # Check if survey has basic form data
+    if not hasattr(survey, 'owner') or not hasattr(survey, 'address'):
+        messages.error(request, 'Survey form is incomplete. Please fill all required sections first.')
+        return redirect('survey_process:survey_form_edit', survey_id=survey.id)
+    
+    context = {
+        'survey': survey,
+    }
+    
+    return render(request, 'survey_process/survey_review.html', context)
+
+
+@login_required
+def survey_save_final(request, survey_id):
+    """
+    Save survey as final after review
+    """
+    survey = get_object_or_404(Survey, id=survey_id, surveyor=request.user)
+    
+    if request.method == 'POST':
+        # Update survey status to form_completed
+        survey.status = 'form_completed'
+        survey.save()
+        
+        # Create history entry
+        SurveyHistory.objects.create(
+            survey=survey,
+            action='completed',
+            performed_by=request.user,
+            notes='Survey form completed and saved after review'
+        )
+        
+        messages.success(request, 'Survey saved successfully! You can now proceed with geotagging.')
+        return redirect('survey_process:survey_detail', survey_id=survey.id)
+    
+    return redirect('survey_process:survey_review', survey_id=survey.id)
+
+
+@login_required
 def survey_detail(request, survey_id):
     """
     Survey Detail View - Shows complete survey information
@@ -382,7 +432,8 @@ def survey_list(request):
     if search_query:
         surveys = surveys.filter(
             models.Q(service_no__icontains=search_query) |
-            models.Q(unique_key__icontains=search_query)
+            models.Q(unique_key__icontains=search_query) |
+            models.Q(survey_number__icontains=search_query)
         )
     
     context = {

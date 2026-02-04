@@ -80,14 +80,111 @@
                     </div>
                     
                     <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="{{ amenities_form.electricity_connection.id_for_label }}" class="form-label">
+                                    Electricity Connection
+                                </label>
+                                {{ amenities_form.electricity_connection }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="{{ amenities_form.private_toilet.id_for_label }}" class="form-label">
+                                    Private Toilet
+                                </label>
+                                {{ amenities_form.private_toilet }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="{{ amenities_form.sewer_connection.id_for_label }}" class="form-label">
+                                    Sewer Connection
+                                </label>
+                                {{ amenities_form.sewer_connection }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="{{ amenities_form.septic_tank.id_for_label }}" class="form-label">
+                                    Septic Tank
+                                </label>
+                                {{ amenities_form.septic_tank }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="{{ amenities_form.open_toilet.id_for_label }}" class="form-label">
+                                    Open Toilet
+                                </label>
+                                {{ amenities_form.open_toilet }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="{{ amenities_form.piped_water_connection.id_for_label }}" class="form-label">
+                                    Piped Water Connection
+                                </label>
+                                {{ amenities_form.piped_water_connection }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="{{ amenities_form.fire_fighting_system.id_for_label }}" class="form-label">
+                                    Fire Fighting System
+                                </label>
+                                {{ amenities_form.fire_fighting_system }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="{{ amenities_form.boring.id_for_label }}" class="form-label">
+                                    Boring
+                                </label>
+                                {{ amenities_form.boring }}
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="{{ amenities_form.mobile_tower.id_for_label }}" class="form-label">
+                                    Mobile Tower
+                                </label>
+                                {{ amenities_form.mobile_tower }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="mb-3">
+                                <label for="{{ amenities_form.advertising_hoarding.id_for_label }}" class="form-label">
+                                    Advertising Hoarding
+                                </label>
+                                {{ amenities_form.advertising_hoarding }}
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
                         <div class="col-12">
                             <div class="d-grid gap-2 d-md-flex justify-content-md-between">
                                 <a href="{% url 'survey_process:survey_floor_details' survey.id %}" class="btn btn-outline-secondary">
                                     <i class="fas fa-arrow-left"></i> Previous: Floor Details
                                 </a>
-                                <button type="submit" class="btn btn-success">
-                                    <i class="fas fa-check"></i> Complete Form
-                                </button>
+                                <div class="d-flex gap-2">
+                                    <a href="{% url 'survey_process:survey_review' survey.id %}" class="btn btn-info">
+                                        <i class="fas fa-eye"></i> View Survey
+                                    </a>
+                                    <button type="submit" class="btn btn-success">
+                                        <i class="fas fa-check"></i> Complete Form
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

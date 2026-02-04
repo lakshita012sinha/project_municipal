@@ -1,0 +1,506 @@
+{% extends 'survey_process/base.html' %}
+
+{% block title %}Survey Review - {{ survey.survey_number|default:survey.service_no }}{% endblock %}
+
+{% block content %}
+<div class="survey-review">
+    <div class="row">
+        <div class="col-12">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h2><i class="fas fa-eye"></i> Survey Review</h2>
+                <div>
+                    <a href="{% url 'survey_process:dashboard' %}" class="btn btn-outline-secondary">
+                        <i class="fas fa-arrow-left"></i> Back to Dashboard
+                    </a>
+                </div>
+            </div>
+            
+            <div class="alert alert-info">
+                <i class="fas fa-info-circle"></i> Please review all the information below carefully before saving. You can edit any section if needed.
+            </div>
+        </div>
+    </div>
+
+<!-- Basic Survey Information -->
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h5 class="mb-0"><i class="fas fa-clipboard-list"></i> Basic Survey Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong>Survey Number:</strong><br>{{ survey.survey_number|default:"<em>Will be generated after saving</em>" }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Service Number:</strong><br>{{ survey.service_no }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Unique Key:</strong><br>{{ survey.unique_key }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong>Surveyor:</strong><br>{{ survey.surveyor.emp_name|default:survey.surveyor.username }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Tax Paid:</strong><br>{{ survey.get_tax_paid_display|default:"Not specified" }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>One Time Paid:</strong><br>{{ survey.get_one_time_paid_display|default:"Not specified" }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong>Multi Storage Complex:</strong><br>{{ survey.get_multi_storage_complex_display|default:"Not specified" }}</p>
+                    </div>
+                </div>
+                {% if survey.surveyor_notes %}
+                <div class="row">
+                    <div class="col-12">
+                        <p><strong>Surveyor Notes:</strong><br>{{ survey.surveyor_notes }}</p>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Property Owner Details -->
+{% if survey.owner %}
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-user"></i> Property Owner Details</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong>Owner Name:</strong><br>{{ survey.owner.owner_name }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Guardian Name:</strong><br>{{ survey.owner.guardian_name }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Age:</strong><br>{{ survey.owner.age }} years</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong>Mobile Number:</strong><br>{{ survey.owner.mobile_no }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Gender:</strong><br>{{ survey.owner.get_gender_display }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Profession:</strong><br>{{ survey.owner.get_profession_display }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong>Relation:</strong><br>{{ survey.owner.get_relation_display }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Property Address Details -->
+{% if survey.address %}
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header bg-info text-white">
+                <h5 class="mb-0"><i class="fas fa-map-marker-alt"></i> Property Address Details</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong>House Number:</strong><br>{{ survey.address.house_no }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Mohalla/Colony Name:</strong><br>{{ survey.address.mohalla_colony_name }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Building Name:</strong><br>{{ survey.address.building_name|default:"Not specified" }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong>Road Name:</strong><br>{{ survey.address.road_name }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Sector:</strong><br>{{ survey.address.sector }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Pincode:</strong><br>{{ survey.address.pincode }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong>Mobile Number:</strong><br>{{ survey.address.mobile_no }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Phone Number:</strong><br>{{ survey.address.phone_no|default:"Not provided" }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Email ID:</strong><br>{{ survey.address.email_id|default:"Not provided" }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Landmark:</strong><br>{{ survey.address.landmark|default:"Not specified" }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Same as Permanent Address:</strong><br>{{ survey.address.same_as_permanent|yesno:"Yes,No" }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Permanent Address:</strong><br>{{ survey.address.permanent_address }}</p>
+                    </div>
+                    {% if survey.address.communication_address %}
+                    <div class="col-md-6">
+                        <p><strong>Communication Address:</strong><br>{{ survey.address.communication_address }}</p>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Property Details -->
+{% if survey.property %}
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header bg-warning text-dark">
+                <h5 class="mb-0"><i class="fas fa-building"></i> Property Details</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong>Area Name:</strong><br>{{ survey.property.get_area_name_display }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Ward Number:</strong><br>{{ survey.property.get_ward_no_display }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Road Type:</strong><br>{{ survey.property.get_road_type_display }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong>Ownership Type:</strong><br>{{ survey.property.get_ownership_type_display }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Use of Property:</strong><br>{{ survey.property.get_use_of_property_display }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Number of Floors:</strong><br>{{ survey.property.no_of_floors }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong>Plot Area:</strong><br>{{ survey.property.plot_area_sq_yd }} Sq Yd</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Plinth Area:</strong><br>{{ survey.property.plinth_area_sq_yd }} Sq Yd</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Vacant Area:</strong><br>{{ survey.property.vacant_area_sq_yd }} Sq Yd</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Floor Details -->
+{% if survey.floors.all %}
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header bg-secondary text-white">
+                <h5 class="mb-0"><i class="fas fa-layer-group"></i> Floor Details</h5>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table class="table table-bordered">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Floor Name</th>
+                                <th>Use Type</th>
+                                <th>Usage Type</th>
+                                <th>From Year</th>
+                                <th>Upto Year</th>
+                                <th>Built Up Area (Sq Ft)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for floor in survey.floors.all %}
+                            <tr>
+                                <td>{{ floor.get_floor_name_display }}</td>
+                                <td>{{ floor.get_use_type_display }}</td>
+                                <td>{{ floor.get_usage_type_display }}</td>
+                                <td>{{ floor.from_year }}</td>
+                                <td>{{ floor.upto_year|default:"Ongoing" }}</td>
+                                <td>{{ floor.built_up_area_sq_ft }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Property Amenities -->
+{% if survey.amenities %}
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header bg-dark text-white">
+                <h5 class="mb-0"><i class="fas fa-tools"></i> Property Amenities</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong>Parking:</strong><br>
+                            <span class="badge bg-{{ survey.amenities.parking|yesno:'success,danger,warning' }}">
+                                {{ survey.amenities.get_parking_display }}
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Street Light:</strong><br>
+                            <span class="badge bg-{{ survey.amenities.street_light|yesno:'success,danger,warning' }}">
+                                {{ survey.amenities.get_street_light_display }}
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Sewer Line:</strong><br>
+                            <span class="badge bg-{{ survey.amenities.sewer_line|yesno:'success,danger,warning' }}">
+                                {{ survey.amenities.get_sewer_line_display }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong>Electricity Connection:</strong><br>
+                            <span class="badge bg-{{ survey.amenities.electricity_connection|yesno:'success,danger,warning' }}">
+                                {{ survey.amenities.get_electricity_connection_display }}
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Private Toilet:</strong><br>
+                            <span class="badge bg-{{ survey.amenities.private_toilet|yesno:'success,danger,warning' }}">
+                                {{ survey.amenities.get_private_toilet_display }}
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Sewer Connection:</strong><br>
+                            <span class="badge bg-{{ survey.amenities.sewer_connection|yesno:'success,danger,warning' }}">
+                                {{ survey.amenities.get_sewer_connection_display }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong>Septic Tank:</strong><br>
+                            <span class="badge bg-{{ survey.amenities.septic_tank|yesno:'success,danger,warning' }}">
+                                {{ survey.amenities.get_septic_tank_display }}
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Open Toilet:</strong><br>
+                            <span class="badge bg-{{ survey.amenities.open_toilet|yesno:'success,danger,warning' }}">
+                                {{ survey.amenities.get_open_toilet_display }}
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Piped Water Connection:</strong><br>
+                            <span class="badge bg-{{ survey.amenities.piped_water_connection|yesno:'success,danger,warning' }}">
+                                {{ survey.amenities.get_piped_water_connection_display }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong>Fire Fighting System:</strong><br>
+                            <span class="badge bg-{{ survey.amenities.fire_fighting_system|yesno:'success,danger,warning' }}">
+                                {{ survey.amenities.get_fire_fighting_system_display }}
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Boring:</strong><br>
+                            <span class="badge bg-{{ survey.amenities.boring|yesno:'success,danger,warning' }}">
+                                {{ survey.amenities.get_boring_display }}
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Mobile Tower:</strong><br>
+                            <span class="badge bg-{{ survey.amenities.mobile_tower|yesno:'success,danger,warning' }}">
+                                {{ survey.amenities.get_mobile_tower_display }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong>Advertising Hoarding:</strong><br>
+                            <span class="badge bg-{{ survey.amenities.advertising_hoarding|yesno:'success,danger,warning' }}">
+                                {{ survey.amenities.get_advertising_hoarding_display }}
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Geotagging Information (if available) -->
+{% if survey.geotagging %}
+<div class="row">
+    <div class="col-12">
+        <div class="card mb-4">
+            <div class="card-header bg-success text-white">
+                <h5 class="mb-0"><i class="fas fa-map-marker-alt"></i> Geotagging Information</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4">
+                        <p><strong>Latitude:</strong><br>{{ survey.geotagging.latitude }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>Longitude:</strong><br>{{ survey.geotagging.longitude }}</p>
+                    </div>
+                    <div class="col-md-4">
+                        <p><strong>GPS Accuracy:</strong><br>{{ survey.geotagging.accuracy|default:"Not recorded" }} meters</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <p><strong>Geotagged By:</strong><br>{{ survey.geotagging.geotagged_by.emp_name|default:survey.geotagging.geotagged_by.username }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <p><strong>Geotagged At:</strong><br>{{ survey.geotagging.geotagged_at|date:"M d, Y H:i" }}</p>
+                    </div>
+                </div>
+                
+                <div class="row mt-3">
+                    <div class="col-md-4">
+                        <h6>Front Photo</h6>
+                        {% if survey.geotagging.front_photo %}
+                            <img src="{{ survey.geotagging.front_photo.url }}" class="img-fluid rounded" alt="Front Photo" style="max-height: 200px;">
+                        {% else %}
+                            <div class="bg-light p-3 text-center rounded">No photo</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Side Photo 1</h6>
+                        {% if survey.geotagging.side_photo_1 %}
+                            <img src="{{ survey.geotagging.side_photo_1.url }}" class="img-fluid rounded" alt="Side Photo 1" style="max-height: 200px;">
+                        {% else %}
+                            <div class="bg-light p-3 text-center rounded">No photo</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-4">
+                        <h6>Side Photo 2</h6>
+                        {% if survey.geotagging.side_photo_2 %}
+                            <img src="{{ survey.geotagging.side_photo_2.url }}" class="img-fluid rounded" alt="Side Photo 2" style="max-height: 200px;">
+                        {% else %}
+                            <div class="bg-light p-3 text-center rounded">No photo</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+
+<!-- Action Buttons -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body action-buttons text-center">
+                <h5 class="mb-4">Review Complete - Choose Your Next Action</h5>
+                <div class="d-flex justify-content-center gap-3 flex-wrap">
+                    <!-- Save Button -->
+                    <form method="post" action="{% url 'survey_process:survey_save_final' survey.id %}" class="d-inline">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i class="fas fa-save"></i> Save Survey
+                        </button>
+                    </form>
+                    
+                    <!-- Edit Button -->
+                    <div class="dropdown">
+                        <button class="btn btn-warning btn-lg dropdown-toggle" type="button" id="editDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-edit"></i> Edit Survey
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="editDropdown">
+                            <li><a class="dropdown-item" href="{% url 'survey_process:survey_form_edit' survey.id %}">
+                                <i class="fas fa-clipboard-list"></i> Basic Information
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'survey_process:survey_owner_details' survey.id %}">
+                                <i class="fas fa-user"></i> Owner Details
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'survey_process:survey_address_details' survey.id %}">
+                                <i class="fas fa-map-marker-alt"></i> Address Details
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'survey_process:survey_property_details' survey.id %}">
+                                <i class="fas fa-building"></i> Property Details
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'survey_process:survey_floor_details' survey.id %}">
+                                <i class="fas fa-layer-group"></i> Floor Details
+                            </a></li>
+                            <li><a class="dropdown-item" href="{% url 'survey_process:survey_amenities' survey.id %}">
+                                <i class="fas fa-tools"></i> Amenities
+                            </a></li>
+                        </ul>
+                    </div>
+                    
+                    <!-- Geotag Button -->
+                    <a href="{% url 'survey_process:survey_geotagging' survey.id %}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-map-marker-alt"></i> 
+                        {% if survey.geotagging %}Update Geotagging{% else %}Add Geotagging{% endif %}
+                    </a>
+                </div>
+                
+                <div class="mt-3">
+                    <small class="text-muted">
+                        <i class="fas fa-info-circle"></i> 
+                        You can save the survey now and add geotagging later, or proceed directly to geotagging.
+                    </small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+{% endblock %}

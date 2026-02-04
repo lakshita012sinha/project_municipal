@@ -31,7 +31,7 @@
                     <div class="col-md-3">
                         <label for="search" class="form-label">Search</label>
                         <input type="text" class="form-control" id="search" name="search" 
-                               value="{{ search_query }}" placeholder="Service No or Unique Key">
+                               value="{{ search_query }}" placeholder="Survey No, Service No or Unique Key">
                     </div>
                     <div class="col-md-3">
                         <label for="status" class="form-label">Status</label>
@@ -82,6 +82,7 @@
                         <table class="table table-striped table-hover">
                             <thead>
                                 <tr>
+                                    <th>Survey No</th>
                                     <th>Service No</th>
                                     <th>Unique Key</th>
                                     <th>Status</th>
@@ -94,6 +95,9 @@
                             <tbody>
                                 {% for survey in surveys %}
                                 <tr>
+                                    <td>
+                                        <strong>{{ survey.survey_number|default:"<em>Not generated</em>" }}</strong>
+                                    </td>
                                     <td>
                                         <strong>{{ survey.service_no }}</strong>
                                     </td>

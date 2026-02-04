@@ -355,3 +355,219 @@ body {
         height: 60px;
     }
 }
+
+/* Survey Process Styles */
+.step-indicator {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px 0;
+    flex-wrap: wrap;
+}
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 10px 15px;
+    margin: 0 10px;
+    border-radius: 8px;
+    background: #f8f9fa;
+    color: #6c757d;
+    min-width: 80px;
+    text-align: center;
+    position: relative;
+}
+
+.step.completed {
+    background: #d4edda;
+    color: #155724;
+}
+
+.step.active {
+    background: #cce5ff;
+    color: #004085;
+    font-weight: 600;
+}
+
+.step i {
+    font-size: 20px;
+    margin-bottom: 5px;
+}
+
+.step small {
+    font-size: 11px;
+    line-height: 1.2;
+}
+
+/* Gap utility classes */
+.gap-1 { gap: 0.25rem !important; }
+.gap-2 { gap: 0.5rem !important; }
+.gap-3 { gap: 1rem !important; }
+.gap-4 { gap: 1.5rem !important; }
+.gap-5 { gap: 3rem !important; }
+
+/* Survey Review Page Styles */
+.survey-review .card-header {
+    font-weight: 600;
+    border-bottom: 2px solid rgba(0,0,0,0.1);
+}
+
+.survey-review .badge {
+    font-size: 0.8em;
+    padding: 0.4em 0.6em;
+}
+
+.survey-review .table th {
+    background-color: #f8f9fa;
+    font-weight: 600;
+    border-top: none;
+}
+
+.survey-review .img-fluid {
+    border: 2px solid #dee2e6;
+    border-radius: 8px;
+    max-height: 200px;
+    object-fit: cover;
+}
+
+.survey-review .card {
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: none;
+    margin-bottom: 1.5rem;
+}
+
+.survey-review .card-body p {
+    margin-bottom: 1rem;
+    line-height: 1.4;
+}
+
+.survey-review .card-body p strong {
+    color: #495057;
+    display: block;
+    margin-bottom: 0.25rem;
+    font-size: 0.9em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Action buttons styling */
+.action-buttons {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 12px;
+    padding: 2rem;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.action-buttons .btn {
+    min-width: 140px;
+    padding: 0.75rem 1.5rem;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+.action-buttons .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+/* Responsive design for survey forms */
+@media (max-width: 768px) {
+    .step-indicator {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+    
+    .step {
+        margin: 5px;
+        min-width: 70px;
+        padding: 8px 10px;
+    }
+    
+    .step i {
+        font-size: 16px;
+    }
+    
+    .step small {
+        font-size: 10px;
+    }
+    
+    .survey-review .d-flex.flex-wrap .btn {
+        margin-bottom: 0.5rem;
+        width: 100%;
+    }
+    
+    .action-buttons {
+        padding: 1.5rem 1rem;
+    }
+    
+    .action-buttons .btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+    }
+}
+
+/* Print styles for survey review */
+@media print {
+    .action-buttons,
+    .btn,
+    .navbar,
+    .step-indicator {
+        display: none !important;
+    }
+    
+    .card {
+        border: 1px solid #000 !important;
+        box-shadow: none !important;
+        page-break-inside: avoid;
+    }
+    
+    .card-header {
+        background: #f0f0f0 !important;
+        color: #000 !important;
+    }
+}
+
+/* Loading spinner */
+.loading-spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid #3498db;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Form validation styles */
+.is-invalid {
+    border-color: #dc3545 !important;
+}
+
+.invalid-feedback {
+    display: block;
+    width: 100%;
+    margin-top: 0.25rem;
+    font-size: 0.875em;
+    color: #dc3545;
+}
+
+/* Success message styles */
+.alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+    border-radius: 8px;
+    padding: 1rem;
+    margin-bottom: 1rem;
+}
+
+.alert-success .fas {
+    margin-right: 0.5rem;
+}

@@ -53,6 +53,7 @@
             <div class="card-body">
                 <div class="row">
                     <div class="col-md-6">
+                        <p><strong>Survey No:</strong> {{ survey.survey_number|default:"Not generated yet" }}</p>
                         <p><strong>Service No:</strong> {{ survey.service_no }}</p>
                         <p><strong>Unique Key:</strong> {{ survey.unique_key }}</p>
                         <p><strong>Surveyor:</strong> {{ survey.surveyor.emp_name }}</p>

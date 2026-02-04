@@ -23,6 +23,8 @@ urlpatterns = [
     
     # Survey Management
     path('<int:survey_id>/', views.survey_detail, name='survey_detail'),
+    path('<int:survey_id>/review/', views.survey_review, name='survey_review'),
+    path('<int:survey_id>/save-final/', views.survey_save_final, name='survey_save_final'),
     path('<int:survey_id>/delete/', views.delete_survey, name='delete_survey'),
     
     # Export functionality

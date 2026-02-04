@@ -1,21 +1,38 @@
 from django import forms
+from datetime import datetime
 from .models import (
     Survey, PropertyOwner, PropertyAddress, PropertyDetails, 
     FloorDetails, PropertyAmenities, SurveyGeotagging
 )
 
 
+def get_year_choices():
+    """Generate year choices in format 2007-2008, 2008-2009, etc."""
+    current_year = datetime.now().year
+    choices = [('', 'Select Year')]
+    for year in range(2007, current_year + 2):
+        year_range = f"{year}-{year + 1}"
+        choices.append((year_range, year_range))
+    return choices
+
+
 class SurveyBasicForm(forms.ModelForm):
     """
     Basic Survey Information Form
     """
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        # Make service_no and unique_key not required
+        self.fields['service_no'].required = False
+        self.fields['unique_key'].required = False
+    
     class Meta:
         model = Survey
         fields = ['service_no', 'unique_key', 'tax_paid', 'one_time_paid', 
                  'multi_storage_complex', 'is_ex_party', 'surveyor_notes']
         widgets = {
-            'service_no': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Service Number'}),
-            'unique_key': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Unique Key'}),
+            'service_no': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Service Number (Optional)'}),
+            'unique_key': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter Unique Key (Optional)'}),
             'tax_paid': forms.Select(attrs={'class': 'form-control'}),
             'one_time_paid': forms.Select(attrs={'class': 'form-control'}),
             'multi_storage_complex': forms.Select(attrs={'class': 'form-control'}),
@@ -93,6 +110,15 @@ class FloorDetailsForm(forms.ModelForm):
     """
     Floor Details Form
     """
+    from_year = forms.ChoiceField(choices=[], widget=forms.Select(attrs={'class': 'form-control'}))
+    upto_year = forms.ChoiceField(choices=[], required=False, widget=forms.Select(attrs={'class': 'form-control'}))
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        year_choices = get_year_choices()
+        self.fields['from_year'].choices = year_choices
+        self.fields['upto_year'].choices = year_choices
+    
     class Meta:
         model = FloorDetails
         fields = ['floor_name', 'use_type', 'usage_type', 'from_year', 'upto_year', 'built_up_area_sq_ft']
@@ -100,8 +126,6 @@ class FloorDetailsForm(forms.ModelForm):
             'floor_name': forms.Select(attrs={'class': 'form-control'}),
             'use_type': forms.Select(attrs={'class': 'form-control'}),
             'usage_type': forms.Select(attrs={'class': 'form-control'}),
-            'from_year': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter From Year'}),
-            'upto_year': forms.NumberInput(attrs={'class': 'form-control', 'placeholder': 'Enter Upto Year'}),
             'built_up_area_sq_ft': forms.NumberInput(attrs={'class': 'form-control', 'step': '0.01', 'placeholder': 'Enter Built Up Area'}),
         }
 

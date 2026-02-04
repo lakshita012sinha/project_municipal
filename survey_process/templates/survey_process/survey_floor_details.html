@@ -152,9 +152,16 @@
                                 <a href="{% url 'survey_process:survey_property_details' survey.id %}" class="btn btn-outline-secondary">
                                     <i class="fas fa-arrow-left"></i> Previous: Property Details
                                 </a>
-                                <button type="submit" class="btn btn-primary">
-                                    <i class="fas fa-arrow-right"></i> Next: Amenities
-                                </button>
+                                <div class="d-flex gap-2">
+                                    {% if survey.owner and survey.address %}
+                                        <a href="{% url 'survey_process:survey_review' survey.id %}" class="btn btn-info">
+                                            <i class="fas fa-eye"></i> View Survey
+                                        </a>
+                                    {% endif %}
+                                    <button type="submit" class="btn btn-primary">
+                                        <i class="fas fa-arrow-right"></i> Next: Amenities
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>
